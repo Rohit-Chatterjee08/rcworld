@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">🎯 Available Jobs</h1>
+        </div>
+    </div>
+
+    {% if jobs %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Found {{ jobs|length }} eligible jobs</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                    <th>Salary</th>
+                                    <th>Portal</th>
+                                    <th>Score</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in jobs %}
+                                <tr>
+                                    <td><strong>{{ job.title }}</strong></td>
+                                    <td>{{ job.company }}</td>
+                                    <td>{{ job.location }}</td>
+                                    <td>{{ job.salary or 'Not specified' }}</td>
+                                    <td><span class="badge bg-primary">{{ job.portal }}</span></td>
+                                    <td><span class="badge bg-success">{{ "%.1f"|format(job.eligibility_score or 0) }}</span></td>
+                                    <td>
+                                        <a href="{{ job.job_url }}" target="_blank" class="btn btn-sm btn-outline-primary">View Job</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">No Jobs Found</h4>
+                <p>No eligible jobs found in the database. Try running a job search first.</p>
+                <hr>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

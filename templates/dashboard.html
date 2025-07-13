@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">🎯 Job Automation Dashboard</h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total Applications</h5>
+                    <div class="stat-number text-primary">{{ stats.total_applications or 0 }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Today's Applications</h5>
+                    <div class="stat-number text-success">{{ stats.today_applications or 0 }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Success Rate</h5>
+                    <div class="stat-number text-info">{{ "%.1f"|format(stats.success_rate or 0) }}%</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Scheduler Status</h5>
+                    <div class="stat-number text-{{ 'success' if scheduler_status.is_running else 'danger' }}">
+                        {{ '🟢 Running' if scheduler_status.is_running else '🔴 Stopped' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">⚡ Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg" onclick="searchJobs()">
+                            🔍 Search Jobs
+                        </button>
+                        <button class="btn btn-success btn-lg" onclick="applyToJobs()">
+                            📝 Apply to Jobs
+                        </button>
+                        <button class="btn btn-info btn-lg" onclick="toggleScheduler()">
+                            {{ '⏹️ Stop' if scheduler_status.is_running else '▶️ Start' }} Scheduler
+                        </button>
+                        <button class="btn btn-warning btn-lg" onclick="createBackup()">
+                            💾 Create Backup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">📋 Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        {% if recent_activity %}
+                            {% for activity in recent_activity %}
+                            <div class="mb-3 p-2 border-bottom">
+                                <small class="text-muted">{{ activity.timestamp|datetime }}</small><br>
+                                <strong class="text-{{ 'success' if activity.success else 'danger' }}">
+                                    {{ '✅' if activity.success else '❌' }} {{ activity.action }}
+                                </strong>
+                                {% if activity.details %}
+                                <br><small class="text-secondary">{{ activity.details }}</small>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No recent activity found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Eligible Jobs -->
+    {% if eligible_jobs %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">🎯 Recent Eligible Jobs</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                    <th>Portal</th>
+                                    <th>Score</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in eligible_jobs[:5] %}
+                                <tr>
+                                    <td><strong>{{ job.title }}</strong></td>
+                                    <td>{{ job.company }}</td>
+                                    <td>{{ job.location }}</td>
+                                    <td><span class="badge bg-primary">{{ job.portal }}</span></td>
+                                    <td><span class="badge bg-success">{{ "%.1f"|format(job.eligibility_score or 0) }}</span></td>
+                                    <td>
+                                        <a href="{{ job.job_url }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function showLoading(buttonElement) {
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Processing...';
+}
+
+function hideLoading(buttonElement, originalText) {
+    buttonElement.disabled = false;
+    buttonElement.innerHTML = originalText;
+}
+
+function searchJobs() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    showLoading(button);
+    
+    $.post('/api/search-jobs', function(data) {
+        hideLoading(button, originalText);
+        if (data.success) {
+            alert('🎉 Found ' + data.jobs_found + ' jobs!');
+            location.reload();
+        } else {
+            alert('❌ Error: ' + data.error);
+        }
+    }).fail(function() {
+        hideLoading(button, originalText);
+        alert('❌ Network error occurred');
+    });
+}
+
+function applyToJobs() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    showLoading(button);
+    
+    $.post('/api/apply-jobs', {
+        'Content-Type': 'application/json'
+    }, function(data) {
+        hideLoading(button, originalText);
+        if (data.success) {
+            alert('📝 Applied to ' + data.total_applications + ' jobs!\n' +
+                  '✅ Successful: ' + data.successful + '\n' +
+                  '❌ Failed: ' + data.failed);
+            location.reload();
+        } else {
+            alert('❌ Error: ' + data.error);
+        }
+    }).fail(function() {
+        hideLoading(button, originalText);
+        alert('❌ Network error occurred');
+    });
+}
+
+function toggleScheduler() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    const isRunning = {{ scheduler_status.is_running | tojson }};
+    const action = isRunning ? 'stop' : 'start';
+    
+    showLoading(button);
+    
+    $.post('/api/scheduler/' + action, function(data) {
+        hideLoading(button, originalText);
+        if (data.success) {
+            alert('⚙️ ' + data.message);
+            location.reload();
+        } else {
+            alert('❌ Error: ' + (data.error || data.message));
+        }
+    }).fail(function() {
+        hideLoading(button, originalText);
+        alert('❌ Network error occurred');
+    });
+}
+
+function createBackup() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    showLoading(button);
+    
+    $.post('/api/backup', function(data) {
+        hideLoading(button, originalText);
+        if (data.success) {
+            alert('💾 Backup created successfully!\nPath: ' + data.backup_path);
+        } else {
+            alert('❌ Error: ' + data.error);
+        }
+    }).fail(function() {
+        hideLoading(button, originalText);
+        alert('❌ Network error occurred');
+    });
+}
+
+// Auto-refresh every 30 seconds
+setInterval(function() {
+    location.reload();
+}, 30000);
+</script>
+{% endblock %}

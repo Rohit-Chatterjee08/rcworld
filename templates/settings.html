@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">⚙️ Settings</h1>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('update_settings') }}">
+        <div class="row">
+            <!-- User Information -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">👤 User Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   value="{{ config.user_info.name or '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   value="{{ config.user_info.email or '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" 
+                                   value="{{ config.user_info.phone or '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" 
+                                   value="{{ config.user_info.location or '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="experience_years" class="form-label">Years of Experience</label>
+                            <input type="number" class="form-control" id="experience_years" name="experience_years" 
+                                   value="{{ config.user_info.experience_years or 0 }}" min="0" max="20" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Criteria -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">🎯 Job Criteria</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="min_salary_lpa" class="form-label">Minimum Salary (LPA)</label>
+                            <input type="number" class="form-control" id="min_salary_lpa" name="min_salary_lpa" 
+                                   value="{{ config.job_criteria.min_salary_lpa or 7 }}" min="1" max="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Target Roles</label>
+                            <div class="form-text mb-2">Current roles: {{ config.job_criteria.roles | join(', ') }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Preferred Locations</label>
+                            <div class="form-text mb-2">Current locations: {{ config.job_criteria.preferred_locations | join(', ') }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Keywords</label>
+                            <div class="form-text mb-2">Current keywords: {{ config.job_criteria.keywords | join(', ') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <!-- Automation Settings -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">🤖 Automation Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="max_applications_per_day" class="form-label">Max Applications per Day</label>
+                            <input type="number" class="form-control" id="max_applications_per_day" name="max_applications_per_day" 
+                                   value="{{ config.automation_settings.max_applications_per_day or 20 }}" min="1" max="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="delay_between_applications" class="form-label">Delay Between Applications (seconds)</label>
+                            <input type="number" class="form-control" id="delay_between_applications" name="delay_between_applications" 
+                                   value="{{ config.automation_settings.delay_between_applications or 60 }}" min="30" max="300" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="dry_run" name="dry_run"
+                                       {% if config.automation_settings.dry_run %}checked{% endif %}>
+                                <label class="form-check-label" for="dry_run">
+                                    Dry Run Mode (Test without applying)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scheduler Settings -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">⏰ Scheduler Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="scheduler_enabled" name="scheduler_enabled"
+                                       {% if config.scheduler.enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="scheduler_enabled">
+                                    Enable Automatic Scheduler
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Run Times</label>
+                            <div class="form-text mb-2">Current times: {{ config.scheduler.run_times | join(', ') }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Timezone</label>
+                            <div class="form-text mb-2">{{ config.scheduler.timezone }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Max Daily Runs</label>
+                            <div class="form-text mb-2">{{ config.scheduler.max_daily_runs }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Portals -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">🌐 Job Portals</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for portal, settings in config.job_portals.items() %}
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ portal.title() }}</h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   id="portal_{{ portal }}" disabled
+                                                   {% if settings.enabled %}checked{% endif %}>
+                                            <label class="form-check-label" for="portal_{{ portal }}">
+                                                Enabled
+                                            </label>
+                                        </div>
+                                        <small class="text-muted">
+                                            {% if settings.login_required %}
+                                                Login Required
+                                            {% else %}
+                                                No Login Required
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            <small>Portal settings can be modified in the config.json file.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg">💾 Save Settings</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg ms-2">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
