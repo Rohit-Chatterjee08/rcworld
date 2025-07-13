@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}Help - Job Application Automation{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">
+            <i class="fas fa-question-circle"></i> Help & Documentation
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Navigation</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#getting-started" class="list-group-item list-group-item-action">Getting Started</a>
+                <a href="#profile-setup" class="list-group-item list-group-item-action">Profile Setup</a>
+                <a href="#job-search" class="list-group-item list-group-item-action">Job Search</a>
+                <a href="#automation" class="list-group-item list-group-item-action">Automation</a>
+                <a href="#troubleshooting" class="list-group-item list-group-item-action">Troubleshooting</a>
+                <a href="#faq" class="list-group-item list-group-item-action">FAQ</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <!-- Getting Started -->
+        <div class="card mb-4" id="getting-started">
+            <div class="card-header">
+                <h5 class="mb-0">🚀 Getting Started</h5>
+            </div>
+            <div class="card-body">
+                <h6>Welcome to Job Application Automation!</h6>
+                <p>This tool helps you automatically search for jobs and apply to them across multiple job portals.</p>
+                
+                <h6>First Steps:</h6>
+                <ol>
+                    <li>Complete your profile with accurate information</li>
+                    <li>Upload your resume in PDF format</li>
+                    <li>Set your job search preferences</li>
+                    <li>Test the system with a manual search</li>
+                    <li>Set up automated scheduling</li>
+                </ol>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Important:</strong> Always review and customize your profile before starting automation.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Setup -->
+        <div class="card mb-4" id="profile-setup">
+            <div class="card-header">
+                <h5 class="mb-0">👤 Profile Setup</h5>
+            </div>
+            <div class="card-body">
+                <h6>Required Information:</h6>
+                <ul>
+                    <li><strong>Name:</strong> Your full name as it appears on your resume</li>
+                    <li><strong>Email:</strong> Professional email address</li>
+                    <li><strong>Phone:</strong> Valid Indian mobile number</li>
+                    <li><strong>Location:</strong> Your preferred work location</li>
+                    <li><strong>Skills:</strong> Key technical skills relevant to your target roles</li>
+                    <li><strong>Experience:</strong> Years of relevant experience</li>
+                    <li><strong>Expected Salary:</strong> Your salary expectations in INR</li>
+                </ul>
+                
+                <h6>Resume Tips:</h6>
+                <ul>
+                    <li>Upload PDF format only</li>
+                    <li>Keep file size under 2MB</li>
+                    <li>Use ATS-friendly format</li>
+                    <li>Include relevant keywords for AI/ML roles</li>
+                    <li>Update regularly with new skills and projects</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Job Search -->
+        <div class="card mb-4" id="job-search">
+            <div class="card-header">
+                <h5 class="mb-0">🔍 Job Search</h5>
+            </div>
+            <div class="card-body">
+                <h6>Search Filters:</h6>
+                <ul>
+                    <li><strong>Target Roles:</strong> Select specific job titles you're interested in</li>
+                    <li><strong>Experience Range:</strong> Set minimum and maximum years of experience</li>
+                    <li><strong>Salary Range:</strong> Set minimum expected salary</li>
+                    <li><strong>Location:</strong> Choose remote, specific city, or multiple locations</li>
+                    <li><strong>Job Portals:</strong> Select which platforms to search</li>
+                </ul>
+                
+                <h6>Supported Job Portals:</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>LinkedIn:</strong> Professional networking</li>
+                            <li><strong>Naukri.com:</strong> India's largest job portal</li>
+                            <li><strong>Indeed:</strong> Global job search</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Wellfound:</strong> Startup jobs</li>
+                            <li><strong>RemoteOK:</strong> Remote opportunities</li>
+                            <li><strong>Company Websites:</strong> Direct applications</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Note:</strong> Some portals may require manual login for full functionality.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Automation -->
+        <div class="card mb-4" id="automation">
+            <div class="card-header">
+                <h5 class="mb-0">🤖 Automation</h5>
+            </div>
+            <div class="card-body">
+                <h6>Scheduling Options:</h6>
+                <ul>
+                    <li><strong>Daily:</strong> Search and apply every day at specified time</li>
+                    <li><strong>Weekly:</strong> Run once per week</li>
+                    <li><strong>Manual:</strong> Run on-demand only</li>
+                </ul>
+                
+                <h6>Safety Features:</h6>
+                <ul>
+                    <li>Application limits per day (default: 5)</li>
+                    <li>Rate limiting between requests</li>
+                    <li>Duplicate application prevention</li>
+                    <li>Error handling and recovery</li>
+                </ul>
+                
+                <h6>Best Practices:</h6>
+                <ul>
+                    <li>Start with manual testing</li>
+                    <li>Monitor application success rates</li>
+                    <li>Adjust search criteria based on results</li>
+                    <li>Keep your profile updated</li>
+                    <li>Review applications regularly</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Troubleshooting -->
+        <div class="card mb-4" id="troubleshooting">
+            <div class="card-header">
+                <h5 class="mb-0">🔧 Troubleshooting</h5>
+            </div>
+            <div class="card-body">
+                <h6>Common Issues:</h6>
+                
+                <div class="accordion" id="troubleshootingAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                No jobs found in search
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>Check if your search criteria are too restrictive</li>
+                                    <li>Try different job portals</li>
+                                    <li>Adjust experience range</li>
+                                    <li>Lower salary expectations temporarily</li>
+                                    <li>Use broader location settings</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                Applications failing
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>Ensure your profile is complete</li>
+                                    <li>Check resume file format (PDF only)</li>
+                                    <li>Verify internet connection</li>
+                                    <li>Try manual application first</li>
+                                    <li>Check application logs for errors</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                Scheduler not working
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>Check if the application is running</li>
+                                    <li>Verify schedule time format</li>
+                                    <li>Ensure system time is correct</li>
+                                    <li>Check logs for scheduler errors</li>
+                                    <li>Try manual execution first</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ -->
+        <div class="card mb-4" id="faq">
+            <div class="card-header">
+                <h5 class="mb-0">❓ Frequently Asked Questions</h5>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                                Is this legal and safe to use?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, this tool automates the job application process which is legal. However, always respect the terms of service of job portals and use reasonable application limits.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                                How many jobs can I apply to per day?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                The default limit is 5 applications per day to avoid overwhelming job portals. You can adjust this in settings, but we recommend staying within reasonable limits.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                                What happens if an application fails?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Failed applications are logged with error details. You can review them in the Applications section and retry manually if needed.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4">
+                                Can I customize the application message?
+                            </button>
+                        </h2>
+                        <div id="faqCollapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, the tool generates a basic cover letter based on your profile information. You can customize this in the profile section.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Support -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">📞 Contact Support</h5>
+            </div>
+            <div class="card-body">
+                <p>Need additional help? Here are ways to get support:</p>
+                <ul>
+                    <li><strong>Email:</strong> support@jobautomation.com</li>
+                    <li><strong>GitHub:</strong> Report issues or request features</li>
+                    <li><strong>Documentation:</strong> Check the README.md file</li>
+                    <li><strong>Community:</strong> Join our Discord server</li>
+                </ul>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Remember:</strong> Always test the system manually before setting up automation.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Highlight current section in navigation
+function highlightCurrentSection() {
+    const sections = document.querySelectorAll('[id]');
+    const navLinks = document.querySelectorAll('.list-group-item-action');
+    
+    let currentSection = '';
+    
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+            currentSection = section.id;
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSection}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Update navigation highlighting on scroll
+window.addEventListener('scroll', highlightCurrentSection);
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', highlightCurrentSection);
+</script>
+{% endblock %}

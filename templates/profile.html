@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Job Application Automation{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">
+            <i class="fas fa-user-edit"></i> Profile Management
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user"></i> Personal Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       value="{{ user_profile.name if user_profile else '' }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="{{ user_profile.email if user_profile else '' }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="{{ user_profile.phone if user_profile else '' }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="experience" class="form-label">Years of Experience</label>
+                                <select class="form-select" id="experience" name="experience">
+                                    <option value="">Select Experience</option>
+                                    {% for i in range(0, 11) %}
+                                        <option value="{{ i }}" {% if user_profile and user_profile.experience == i %}selected{% endif %}>
+                                            {{ i }} year{{ 's' if i != 1 else '' }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="current_salary" class="form-label">Current Salary (INR)</label>
+                                <input type="number" class="form-control" id="current_salary" name="current_salary" 
+                                       value="{{ user_profile.current_salary if user_profile else '' }}" 
+                                       placeholder="e.g., 600000">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="expected_salary" class="form-label">Expected Salary (INR) *</label>
+                                <input type="number" class="form-control" id="expected_salary" name="expected_salary" 
+                                       value="{{ user_profile.expected_salary if user_profile else '' }}" 
+                                       placeholder="e.g., 700000" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Preferred Location *</label>
+                        <input type="text" class="form-control" id="location" name="location" 
+                               value="{{ user_profile.location if user_profile else 'Remote' }}" 
+                               placeholder="e.g., Remote, Kolkata, Bangalore" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="skills" class="form-label">Key Skills *</label>
+                        <textarea class="form-control" id="skills" name="skills" rows="3" 
+                                  placeholder="e.g., Python, Machine Learning, AI, NLP, TensorFlow, PyTorch" required>{{ user_profile.skills if user_profile else '' }}</textarea>
+                        <div class="form-text">List your key skills separated by commas</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="resume" class="form-label">Resume Upload</label>
+                        <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                        <div class="form-text">Upload your resume in PDF, DOC, or DOCX format</div>
+                        {% if user_profile and user_profile.resume_path %}
+                            <div class="mt-2">
+                                <small class="text-success">
+                                    <i class="fas fa-check"></i> Resume uploaded: {{ user_profile.resume_path.split('/')[-1] }}
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6><i class="fas fa-link"></i> Social Profiles (Optional)</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="linkedin_url" class="form-label">LinkedIn URL</label>
+                                <input type="url" class="form-control" id="linkedin_url" name="linkedin_url" 
+                                       value="{{ user_profile.linkedin_url if user_profile else '' }}" 
+                                       placeholder="https://linkedin.com/in/yourname">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="github_url" class="form-label">GitHub URL</label>
+                                <input type="url" class="form-control" id="github_url" name="github_url" 
+                                       value="{{ user_profile.github_url if user_profile else '' }}" 
+                                       placeholder="https://github.com/yourname">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="portfolio_url" class="form-label">Portfolio URL</label>
+                        <input type="url" class="form-control" id="portfolio_url" name="portfolio_url" 
+                               value="{{ user_profile.portfolio_url if user_profile else '' }}" 
+                               placeholder="https://yourportfolio.com">
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <!-- Profile Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-pie"></i> Profile Completion
+                </h5>
+            </div>
+            <div class="card-body">
+                {% set completion_percentage = 0 %}
+                {% if user_profile %}
+                    {% set required_fields = ['name', 'email', 'phone', 'location', 'skills', 'expected_salary'] %}
+                    {% set completed_fields = [] %}
+                    {% for field in required_fields %}
+                        {% if user_profile[field] %}
+                            {% set _ = completed_fields.append(field) %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set completion_percentage = (completed_fields|length / required_fields|length * 100)|round|int %}
+                {% endif %}
+                
+                <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: {{ completion_percentage }}%">
+                        {{ completion_percentage }}%
+                    </div>
+                </div>
+                
+                <div class="profile-checklist">
+                    <div class="checklist-item {{ 'completed' if user_profile and user_profile.name else 'pending' }}">
+                        <i class="fas fa-{{ 'check' if user_profile and user_profile.name else 'times' }}"></i>
+                        Full Name
+                    </div>
+                    <div class="checklist-item {{ 'completed' if user_profile and user_profile.email else 'pending' }}">
+                        <i class="fas fa-{{ 'check' if user_profile and user_profile.email else 'times' }}"></i>
+                        Email Address
+                    </div>
+                    <div class="checklist-item {{ 'completed' if user_profile and user_profile.phone else 'pending' }}">
+                        <i class="fas fa-{{ 'check' if user_profile and user_profile.phone else 'times' }}"></i>
+                        Phone Number
+                    </div>
+                    <div class="checklist-item {{ 'completed' if user_profile and user_profile.skills else 'pending' }}">
+                        <i class="fas fa-{{ 'check' if user_profile and user_profile.skills else 'times' }}"></i>
+                        Key Skills
+                    </div>
+                    <div class="checklist-item {{ 'completed' if user_profile and user_profile.resume_path else 'pending' }}">
+                        <i class="fas fa-{{ 'check' if user_profile and user_profile.resume_path else 'times' }}"></i>
+                        Resume Upload
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Tips -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-lightbulb"></i> Profile Tips
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="tip-item mb-3">
+                    <h6><i class="fas fa-file-alt"></i> Resume</h6>
+                    <p class="text-muted small">Keep your resume updated and tailored for AI/ML roles. Use keywords like "machine learning", "python", "AI".</p>
+                </div>
+                
+                <div class="tip-item mb-3">
+                    <h6><i class="fas fa-tags"></i> Skills</h6>
+                    <p class="text-muted small">List specific technical skills relevant to your target roles. Include programming languages, frameworks, and tools.</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h6><i class="fas fa-map-marker-alt"></i> Location</h6>
+                    <p class="text-muted small">Be specific about your location preferences. "Remote" works well for AI/ML roles.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-format salary inputs
+    const salaryInputs = document.querySelectorAll('#current_salary, #expected_salary');
+    salaryInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Remove non-numeric characters
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+    
+    // Validate form before submission
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const requiredFields = ['name', 'email', 'phone', 'location', 'skills', 'expected_salary'];
+        let isValid = true;
+        
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule - Job Application Automation{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">
+            <i class="fas fa-calendar-alt"></i> Schedule Automation
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-clock"></i> Schedule Settings
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="schedule_time" class="form-label">Run Time</label>
+                        <input type="time" class="form-control" id="schedule_time" name="schedule_time" 
+                               value="09:00" required>
+                        <div class="form-text">Choose when to run the automated job search</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="frequency" class="form-label">Frequency</label>
+                        <select class="form-select" id="frequency" name="frequency" required>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">What to do when scheduled:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="auto_search" checked>
+                            <label class="form-check-label" for="auto_search">
+                                Search for new jobs
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="auto_apply" checked>
+                            <label class="form-check-label" for="auto_apply">
+                                Auto-apply to suitable jobs
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="send_notifications">
+                            <label class="form-check-label" for="send_notifications">
+                                Send email notifications
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="max_applications" class="form-label">Max Applications per Run</label>
+                        <input type="number" class="form-control" id="max_applications" name="max_applications" 
+                               value="5" min="1" max="20">
+                        <div class="form-text">Limit applications to avoid overwhelming job portals</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Schedule
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list"></i> Current Schedule
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if scheduled_jobs %}
+                    {% for job in scheduled_jobs %}
+                    <div class="scheduled-job mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">{{ job.name }}</h6>
+                                <p class="mb-0 text-muted">
+                                    <i class="fas fa-clock"></i> {{ job.next_run_time.strftime('%Y-%m-%d %H:%M') if job.next_run_time else 'Not scheduled' }}
+                                </p>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-danger" onclick="removeScheduledJob('{{ job.id }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h6 class="text-muted">No scheduled jobs</h6>
+                        <p class="text-muted">Create a schedule to automate your job search</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle"></i> Schedule Tips
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="tip-item mb-3">
+                    <h6><i class="fas fa-clock"></i> Best Times</h6>
+                    <p class="text-muted small">Run searches in the morning (8-10 AM) when new jobs are typically posted.</p>
+                </div>
+                
+                <div class="tip-item mb-3">
+                    <h6><i class="fas fa-repeat"></i> Frequency</h6>
+                    <p class="text-muted small">Daily searches work best for active job hunting. Weekly is good for passive searching.</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h6><i class="fas fa-bell"></i> Notifications</h6>
+                    <p class="text-muted small">Enable email notifications to stay updated on your automated applications.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manual Run Section -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-play"></i> Manual Execution
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6>Test Your Automation</h6>
+                        <p class="text-muted">Run the job search and application process manually to test your settings.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <a href="{{ url_for('run_manual') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-play"></i> Run Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Run History -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history"></i> Recent Runs
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Run Time</th>
+                                <th>Type</th>
+                                <th>Jobs Found</th>
+                                <th>Applications</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-01-15 09:00</td>
+                                <td><span class="badge bg-info">Scheduled</span></td>
+                                <td>12</td>
+                                <td>3</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-14 14:30</td>
+                                <td><span class="badge bg-primary">Manual</span></td>
+                                <td>8</td>
+                                <td>2</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-14 09:00</td>
+                                <td><span class="badge bg-info">Scheduled</span></td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td><span class="badge bg-warning">No Jobs</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function removeScheduledJob(jobId) {
+    if (confirm('Are you sure you want to remove this scheduled job?')) {
+        // This would make an AJAX call to remove the scheduled job
+        alert('Job removal functionality would be implemented here');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Update time display
+    const timeInput = document.getElementById('schedule_time');
+    const frequencySelect = document.getElementById('frequency');
+    
+    function updateSchedulePreview() {
+        const time = timeInput.value;
+        const frequency = frequencySelect.value;
+        
+        if (time && frequency) {
+            const preview = document.getElementById('schedule_preview');
+            if (preview) {
+                preview.textContent = `Next run: ${frequency} at ${time}`;
+            }
+        }
+    }
+    
+    timeInput.addEventListener('change', updateSchedulePreview);
+    frequencySelect.addEventListener('change', updateSchedulePreview);
+    
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const time = timeInput.value;
+        const frequency = frequencySelect.value;
+        
+        if (!time || !frequency) {
+            e.preventDefault();
+            alert('Please fill in all required fields');
+        }
+    });
+});
+</script>
+{% endblock %}
