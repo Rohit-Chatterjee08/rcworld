@@ -1,0 +1,72 @@
+{
+  "user_info": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "phone": "+91-XXXXXXXXXX",
+    "location": "Kolkata, India",
+    "experience_years": 2,
+    "resume_path": "uploads/resume.pdf",
+    "cover_letter_template": "I am writing to express my interest in the {position} role at {company}. With {experience} years of experience in AI and automation, I am excited to contribute to your team."
+  },
+  "job_criteria": {
+    "roles": ["Prompt Engineer", "AI Engineer", "ML Engineer", "Data Scientist", "Python Developer"],
+    "experience_range": [0, 3],
+    "min_salary_lpa": 7,
+    "preferred_locations": ["Remote", "Kolkata", "Work from Home", "WFH"],
+    "keywords": ["AI", "Machine Learning", "Python", "LLM", "GPT", "Prompt Engineering"],
+    "exclude_keywords": ["Senior", "Lead", "Manager", "5+ years"]
+  },
+  "job_portals": {
+    "linkedin": {
+      "enabled": true,
+      "base_url": "https://www.linkedin.com/jobs/search/",
+      "login_required": true
+    },
+    "naukri": {
+      "enabled": true,
+      "base_url": "https://www.naukri.com/",
+      "login_required": true
+    },
+    "indeed": {
+      "enabled": true,
+      "base_url": "https://in.indeed.com/",
+      "login_required": false
+    },
+    "wellfound": {
+      "enabled": true,
+      "base_url": "https://wellfound.com/",
+      "login_required": true
+    },
+    "remoteok": {
+      "enabled": true,
+      "base_url": "https://remoteok.io/",
+      "login_required": false
+    }
+  },
+  "automation_settings": {
+    "headless_browser": false,
+    "implicit_wait": 10,
+    "max_applications_per_day": 20,
+    "delay_between_applications": 60,
+    "screenshot_on_error": true,
+    "auto_submit": false,
+    "dry_run": true
+  },
+  "scheduler": {
+    "enabled": true,
+    "run_times": ["09:00", "14:00", "18:00"],
+    "timezone": "Asia/Kolkata",
+    "max_daily_runs": 3
+  },
+  "database": {
+    "path": "data/jobs.db",
+    "backup_enabled": true,
+    "backup_frequency": "daily"
+  },
+  "logging": {
+    "level": "INFO",
+    "file_path": "logs/automation.log",
+    "max_file_size": "10MB",
+    "backup_count": 5
+  }
+}
