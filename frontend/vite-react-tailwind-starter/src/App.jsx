@@ -12,7 +12,7 @@ function App() {
     const formData = new FormData();
     formData.append("resume", resume);
 
-    const response = await fetch("http://localhost:8000/upload-resume", {
+    const response = await fetch("https://job-automation-f85r.onrender.com/api/upload-resume", {
       method: "POST",
       body: formData,
     });
@@ -22,7 +22,7 @@ function App() {
   };
 
   const generateCoverLetter = async () => {
-    const response = await fetch("http://localhost:8000/generate-cover-letter", {
+    const response = await fetch("https://job-automation-f85r.onrender.com/api/generate-cover-letter", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ job_title: "Software Engineer" }),
