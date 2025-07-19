@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-dotenv
+openai>=1.0.0
+beautifulsoup4
+requests
+selenium
+aiofiles
+python-multipart
+sqlalchemy
